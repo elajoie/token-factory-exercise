@@ -1,0 +1,12 @@
+# Training venv (.venv-train) - versions current as of Sept 2026
+torch>=2.10,<2.15
+transformers==5.17.0
+trl==1.14.0
+peft==0.21.0
+accelerate==1.15.0
+datasets>=4.8.4,<5.1
+bitsandbytes>=0.48
+kernels                 # prebuilt FlashAttention-2 from the HF kernels hub
+liger-kernel>=0.8.2
+tensorboard
+huggingface_hub[hf_xet]

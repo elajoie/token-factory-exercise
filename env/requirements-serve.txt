@@ -1,0 +1,4 @@
+# Serving + load-test venv (.venv-serve)
+vllm==0.30.0
+matplotlib
+pandas

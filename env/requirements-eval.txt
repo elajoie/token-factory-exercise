@@ -1,0 +1,4 @@
+# BFCL venv (.venv-eval) - bfcl-eval pins numpy 1.26 etc., so it gets its own env.
+# It only talks HTTP to the vLLM server; CPU torch is enough (installed first by setup_vm.sh).
+bfcl-eval==2026.3.23
+transformers==5.17.0

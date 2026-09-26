@@ -1,0 +1,8 @@
+.venv-*/
+models/
+runs/
+logs/
+data/processed/*.jsonl
+eval/bfcl_runs/*/result/
+bench/prompts_bfcl.jsonl
+__pycache__/

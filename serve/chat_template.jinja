@@ -1,0 +1,42 @@
+{#- Production chat template: Qwen3 ChatML + BFCL prompting-mode system prompt. -#}
+{%- set ns = namespace(docs=[], sys=none, start=0) -%}
+{%- if messages and messages[0]['role'] == 'system' -%}
+  {%- set ns.sys = messages[0]['content'] -%}
+  {%- set ns.start = 1 -%}
+{%- endif -%}
+{%- if tools -%}
+  {%- for t in tools -%}
+    {%- if t['function'] is defined -%}{%- set ns.docs = ns.docs + [t['function']] -%}{%- else -%}{%- set ns.docs = ns.docs + [t] -%}{%- endif -%}
+  {%- endfor -%}
+  {%- set bfcl = "You are an expert in composing functions.You are given a question and a set of possible functions. Based on the question, you will need to make one or more function/tool calls to achieve the purpose. If none of the functions can be used, point it out. If the given question lacks the parameters required by the function, also point it out.\n\nYou should only return the function calls in your response.\n\nIf you decide to invoke any of the function(s), you MUST put it in the format of [func_name1(params_name1=params_value1, params_name2=params_value2...), func_name2(params)].  You SHOULD NOT include any other text in the response.\n\nAt each turn, you should try your best to complete the tasks requested by the user within the current turn. Continue to output functions to call until you have fulfilled the user's request to the best of your ability. Once you have no more functions to call, the system will consider the current turn complete and proceed to the next turn or task.\n\nHere is a list of functions in json format that you can invoke.\n" + (ns.docs | tojson(indent=4, ensure_ascii=True)) + "\n" -%}
+  {%- if ns.sys -%}{%- set ns.sys = bfcl + '\n\n' + ns.sys -%}{%- else -%}{%- set ns.sys = bfcl -%}{%- endif -%}
+{%- endif -%}
+{%- if ns.sys is not none -%}{{- '<|im_start|>system\n' + ns.sys + '<|im_end|>\n' -}}{%- endif -%}
+{%- set msgs = messages[ns.start:] -%}
+{%- for m in msgs -%}
+  {%- if m['role'] == 'user' -%}
+    {{- '<|im_start|>user\n' + m['content'] + '<|im_end|>\n' -}}
+  {%- elif m['role'] == 'assistant' -%}
+    {{- '<|im_start|>assistant\n' -}}
+    {%- if m['tool_calls'] -%}
+      {{- '[' -}}
+      {%- for tc in m['tool_calls'] -%}
+        {%- set f = tc['function'] if tc['function'] is defined else tc -%}
+        {{- f['name'] + '(' -}}
+        {%- if f['arguments'] is mapping -%}
+          {%- for k, v in f['arguments'].items() -%}{{- k + '=' + (v | tojson) -}}{%- if not loop.last -%}{{- ', ' -}}{%- endif -%}{%- endfor -%}
+        {%- else -%}{{- f['arguments'] -}}{%- endif -%}
+        {{- ')' -}}{%- if not loop.last -%}{{- ', ' -}}{%- endif -%}
+      {%- endfor -%}
+      {{- ']' -}}
+    {%- elif m['content'] -%}
+      {{- m['content'] -}}
+    {%- endif -%}
+    {{- '<|im_end|>\n' -}}
+  {%- elif m['role'] == 'tool' -%}
+    {%- if loop.first or msgs[loop.index0 - 1]['role'] != 'tool' -%}{{- '<|im_start|>user' -}}{%- endif -%}
+    {{- '\n<tool_response>\n' + m['content'] + '\n</tool_response>' -}}
+    {%- if loop.last or msgs[loop.index0 + 1]['role'] != 'tool' -%}{{- '<|im_end|>\n' -}}{%- endif -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- if add_generation_prompt -%}{{- '<|im_start|>assistant\n' -}}{%- endif -%}

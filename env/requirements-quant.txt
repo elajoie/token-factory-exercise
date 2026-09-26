@@ -1,0 +1,2 @@
+# Quantisation venv (.venv-quant) - llm-compressor pins its own torch/transformers
+llmcompressor==0.14.0

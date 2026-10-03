@@ -1,0 +1,15 @@
+{
+  "raw_rows": 11300,
+  "kept_dialogs": 11292,
+  "train_dialogs": 10728,
+  "val_dialogs": 564,
+  "dropped": {
+    "empty_turn": 5,
+    "duplicate": 3
+  },
+  "first_assistant_turn_is_function_call_pct": 82.3,
+  "first_assistant_turn_is_text_pct (irrelevance / clarification)": 17.7,
+  "turns_per_dialog_mean": 2.44,
+  "turns_per_dialog_max": 12,
+  "system_prompt_chars_median": 2090
+}

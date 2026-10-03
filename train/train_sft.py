@@ -162,7 +162,7 @@ def main():
         metric_for_best_model="eval_loss",
         greater_is_better=False,
         logging_steps=10,
-        report_to=None if a.report_to == "none" else [a.report_to],
+        report_to="none" if a.report_to == "none" else [a.report_to],
         seed=a.seed,
         data_seed=a.seed,
         dataloader_num_workers=4,

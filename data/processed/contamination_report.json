@@ -1,0 +1,25 @@
+{
+  "flagged_dialogs": 4,
+  "examples": [
+    {
+      "toolace_id": "toolace_6153",
+      "bfcl_id": "live_simple_11-3-7",
+      "text": "Could you tell me the current weather conditions in San Francisco?"
+    },
+    {
+      "toolace_id": "toolace_6417",
+      "bfcl_id": "live_irrelevance_874-359-0",
+      "text": "\u660e\u5929\u51c6\u5907\u53bb\u770b\u8db3\u7403\u6bd4\u8d5b\uff0c\u4f60\u80fd\u544a\u8bc9\u6211\u660e\u5929\u5317\u4eac\u7684\u5929\u6c14\u5982\u4f55\uff0c\u5e76\u4e14\u67e5\u627e\u4e00\u4e0b\u6700\u8fd1\u7684\u8db3\u7403\u65b0\u95fb\uff0c\u6211\u60f3\u770b\u770b\u54ea\u4e2a\u7403\u961f\u7684\u72b6\u6001\u66f4\u597d?"
+    },
+    {
+      "toolace_id": "toolace_168",
+      "bfcl_id": "live_simple_11-3-7",
+      "text": "Could you tell me the current weather conditions in San Francisco?"
+    },
+    {
+      "toolace_id": "toolace_5265",
+      "bfcl_id": "simple_python_272",
+      "text": "I need to find out the area and circumference of a circle with a radius of 7.5 meters. The calculation date is 18/07/2024 10:30."
+    }
+  ]
+}

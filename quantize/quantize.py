@@ -53,7 +53,12 @@ else:
         lambda x: tok(x["text"], add_special_tokens=False, truncation=True, max_length=a.calib_max_len),
         remove_columns=["text"],
     )
-    recipe = [AWQModifier(targets=["Linear"], scheme="W4A16", ignore=["lm_head"])]
+    from llmcompressor.modifiers.quantization import QuantizationModifier
+    # llm-compressor >= 0.14: AWQ only rescales; a QuantizationModifier must follow it
+    recipe = [
+        AWQModifier(duo_scaling="both"),
+        QuantizationModifier(targets="Linear", scheme="W4A16", ignore=["lm_head"]),
+    ]
     oneshot(model=model, dataset=ds, recipe=recipe,
             max_seq_length=a.calib_max_len, num_calibration_samples=len(texts))
 
